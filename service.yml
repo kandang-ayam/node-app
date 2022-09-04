@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: node-app
+spec:
+  selector:
+    matchLabels:
+      app: node-app
+  replicas: 2 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: node-app
+          image: 13.250.112.113:8030/node/nodedo:latest # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9005 # The port that the container is running on in the cluster
+      imagePullSecrets:
+        - name: harbor-reg
+
+
+---
+
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: node-app
+spec:
+  selector:
+    app: node-app
+  ports:
+    - protocol: "TCP"
+      port: 9005 # The port that the service is running on in the cluster
+      targetPort: 80 # The port exposed by the service
+  type: Loadbalancer # type of the service.
+
