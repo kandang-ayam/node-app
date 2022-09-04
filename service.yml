@@ -35,5 +35,5 @@ spec:
     - protocol: "TCP"
       port: 9005 # The port that the service is running on in the cluster
       targetPort: 80 # The port exposed by the service
-  type: Loadbalancer # type of the service.
+  type: LoadBalancer # type of the service.
 
