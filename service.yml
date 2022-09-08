@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: 13.250.112.113:8030/node/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
+          image: 18.141.146.100:8030/node/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9005 # The port that the container is running on in the cluster
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1 # Kubernetes API version
 kind: Service # Kubernetes resource kind we are creating
 metadata: # Metadata of the resource kind we are creating
-  name: node-app
+  name: node-api
 spec:
   selector:
     app: node-app
