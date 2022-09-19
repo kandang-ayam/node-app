@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: node-app
-  replicas: 2 # Number of replicas that will be created for this deployment
+  replicas: 1 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: 54.179.175.95:8030/node/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
+          image: 18.138.253.188:8030/node/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9005 # The port that the container is running on in the cluster
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1 # Kubernetes API version
 kind: Service # Kubernetes resource kind we are creating
 metadata: # Metadata of the resource kind we are creating
-  name: node-api
+  name: node-svc
 spec:
   selector:
     app: node-app
@@ -35,6 +35,6 @@ spec:
     - protocol: "TCP"
       port: 9005 # The port that the service is running on in the cluster
       targetPort: 80 # The port exposed by the service
-  type: LoadBalancer # type of the service.
+  type: NodePort # type of the service.
   #externalIPs:
    #- 192.168.0.10
