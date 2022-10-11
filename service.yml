@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: 13.251.157.103:8030/node/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
+          image: panjol/node-app:$BUILD_NUMBER # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9005 # The port that the container is running on in the cluster
