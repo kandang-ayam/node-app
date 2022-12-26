@@ -1,0 +1,60 @@
+pipeline {
+
+  environment {
+    DOCKER_IMAGE_NAME = "node-app"
+    dockerImage = ""
+    DOCKER_TAG = "$BUILD_NUMBER"
+    IMAGE_URL_WITH_TAG = "panjol/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+    DOCKERHUB_CREDENTIALS= credentials('docker-hub') 
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git credentialsId: 'git-cred', url: 'https://gitlab.com/kandang-ayam/node-app.git'
+      }
+    }
+
+    stage('Build image') {
+      steps{
+        script {
+          sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
+        }
+      }
+    }
+    stage('logout'){
+        steps{
+            script{
+                sh 'docker logout'
+            }
+        }
+    }
+    stage('login'){
+        steps{
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+    }
+    stage('Pushing Image') {
+      steps{
+        script {
+            sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${IMAGE_URL_WITH_TAG}'
+            sh 'docker push ${IMAGE_URL_WITH_TAG} '
+          }
+        }
+    }
+    stage('Remove Docker Images'){
+        steps{
+            sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+            sh 'docker rmi -f ${IMAGE_URL_WITH_TAG}'
+        }
+    }
+    stage ('Deploy Kubernets'){
+       	steps{
+                  kubernetesDeploy (configs: 'service.yml', kubeconfigId: 'kubernetes')
+            }
+        }
+    }
+}

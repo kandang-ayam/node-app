@@ -1,14 +1,11 @@
 # Sample nodejs application with docker Conatiner
 
-
-# Installation
+# Run application native
 
 
 ```javascript
 
-    // clone the application with git clone
-
-    // then install the npm modules using
+    // then install the npm modules 
      
     npm install
 
@@ -26,6 +23,7 @@
 
 ```
 
+# Run Application with docker
 
 # Building docker image
 
