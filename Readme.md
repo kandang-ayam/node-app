@@ -5,23 +5,14 @@
 
 ```javascript
 
-    // then install the npm modules 
+    // install the npm
      
     npm install
 
-
-```
-
-
-# Running the application
-
-
-```javascript
-
     node server.js
 
-
 ```
+
 
 # Run Application with docker
 
@@ -40,8 +31,8 @@
 
 ```bash
 
-    // 9005 port is given since the docker file contains 9005 port
-    docker run -it -d -p <outside-port-of-your-choice>:9005 <imagename:version>
+    // port yang container harus sama dengan yang didefinisikan pada Dockerfile, untuk port luar yang digunakan untuk mengakses bisa custom
+    docker run -it -d -p <outside-port>:9005 <imagename:version>
 
 ```
 
