@@ -31,8 +31,8 @@ docker-build:
       - master
 
 deploy:
-  - image: alpine
   - stage: deploy
+  - image: alpine
   - before_script: 
     - apk --no-cache add curl
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
