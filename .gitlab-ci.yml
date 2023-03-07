@@ -21,9 +21,9 @@ docker-build:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - docker build -t node:$BUILD_NUMBER .
-    - docker tag node:$BUILD_NUMBER panjol/node:$BUILD_NUMBER
-    - docker push "panjol/node:$BUILD_NUMBER"
+    - docker build -t node:latest .
+    - docker tag node:$BUILD_NUMBER panjol/node:latest
+    - docker push "panjol/node:latest"
   # Run this job in a branch where a Dockerfile exists
   only:
       - master
