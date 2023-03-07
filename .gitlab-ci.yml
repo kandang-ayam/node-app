@@ -41,9 +41,7 @@ deploy:
     - ls
     - export KUBECONFIG=kubeconfig.yml
     - kubectl get nodes
-    - kubectl apply -f service.yml
-
   - script:
-    - kubectl rollout restart deployment node-app
+    - kubectl apply -f service.yml
   - only:
     - master 
