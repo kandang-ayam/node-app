@@ -17,12 +17,20 @@ docker-build:
   services:
     - docker:dind
   before_script:
+<<<<<<< HEAD
     - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" 
+=======
+    - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
+>>>>>>> d95cbb9601b7cd20d8624c0a9b293093db0ee392
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
     - docker build -t node:latest .
+<<<<<<< HEAD
     - docker tag node:latest panjol/node:latest
+=======
+    - docker tag node:$BUILD_NUMBER panjol/node:latest
+>>>>>>> d95cbb9601b7cd20d8624c0a9b293093db0ee392
     - docker push "panjol/node:latest"
   # Run this job in a branch where a Dockerfile exists
   only:
