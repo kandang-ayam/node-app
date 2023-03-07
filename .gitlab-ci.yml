@@ -29,3 +29,21 @@ docker-build:
   # Run this job in a branch where a Dockerfile exists
   only:
       - master
+
+deploy:
+  - image: alpine
+  - stage: deploy
+  - before_script: 
+    - apk --no-cache add curl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x ./kubectl
+    - mv ./kubectl /usr/local/bin/kubectl
+    - ls
+    - export KUBECONFIG=kubeconfig.yml
+    - kubectl get nodes
+    - kubectl apply -f service.yml
+
+  - script:
+    - kubectl rollout restart deployment node-app
+  - only:
+    - master 
