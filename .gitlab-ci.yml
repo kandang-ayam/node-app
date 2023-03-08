@@ -27,5 +27,5 @@ deploy:
         - gcloud auth activate-service-account --key-file $GCP_
         - kubectl apply -f service.yml
     dependencies:
-        - push
+        - build
     when: on_success
