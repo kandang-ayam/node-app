@@ -17,22 +17,19 @@ build:
         - docker push panjol/node:$CI_PIPELINE_ID
     artifacts:
         paths:
-            - Dockerfile
+            - /tmp/build/*
     allow_failure: false
 
 deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-      - apk add --update --no-cache curl
-      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-      - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-      - apk install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-      - mkdir -p /kubeconfig
-      - echo "$KUBECONFIG_CONTENTS" | base64 -d > $KUBECONFIG
-      - kubectl config use-context $KUBE_CONTEXT
-      - envsubst < service.yml | kubectl apply -f -
+        - echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+        - gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        - gcloud container clusters get-credentials autopilot-cluster --region asia-southeast1 --project calm-vehicle-380009
+        
+        # Deploy the application
+        - kubectl set image deployment/node-app node-app=docker.io/$DOCKER_HUB_USER/node-app:$CI_PIPELINE_ID --record
     dependencies:
         - build
     environment:
