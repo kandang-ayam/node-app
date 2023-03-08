@@ -26,7 +26,7 @@ deploy:
     script:
         - echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
         - gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-        - gcloud container clusters get-credentials autopilot-cluster --region asia-southeast1 --project calm-vehicle-380009
+        - gcloud container clusters get-credentials autopilot-cluster --region $GCP_REGION --project $GCP_PROJECT_ID
         
         # Deploy the application
         - kubectl set image deployment/node-app node-app=docker.io/$DOCKER_HUB_USER/node-app:$CI_PIPELINE_ID --record
