@@ -24,9 +24,9 @@ deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-        - echo $GCP_SERVICE_ACCOUNT > ${HOME}/gcloud-service-account.json
-        - echo $GCP_SERVICE_ACCOUNT_KEY > ${HOME}/gcloud-service-account-key.json
-        - gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-account-key.json
+        #- echo $GCP_SERVICE_ACCOUNT > ${HOME}/gcloud-service-account.json
+        # - echo $GCP_SERVICE_ACCOUNT_KEY > ${HOME}/gcloud-service-account-key.json
+        #- gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-account-key.json
         - gcloud container clusters get-credentials autopilot-cluster --region $GCP_REGION --project $GCP_PROJECT_ID
         
         # Deploy the application
