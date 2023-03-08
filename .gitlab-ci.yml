@@ -22,10 +22,14 @@ build:
 
 deploy:
     stage: deploy
-    image: google/cloud-sdk
+    image: google/cloud-sdk:alpine
     script:
-        ## - gcloud auth activate-service-account --key-file $GCP_
-        - kubectl apply -f service.yml
+      - apk add --update --no-cache curl
+      - mkdir -p /kubeconfig
+      - echo "$KUBECONFIG_CONTENTS" | base64 -d > $KUBECONFIG
+      - kubectl config use-context $KUBE_CONTEXT
+      - envsubst < service.yml | kubectl apply -f -
     dependencies:
         - build
-    when: on_success
+    environment:
+        - name: production
