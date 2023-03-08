@@ -1,6 +1,6 @@
 variables:
     DOCKER_DRIVER: overlay2
-    
+
 stages:
     - build
     - push
@@ -10,10 +10,10 @@ build:
     stage: build
     image: docker:latest
     services: 
-        - docker.dind
+        - name: docker:stable-dind
+        - command: ["--insecure-registry=dockerhub.com"]
     script:
-        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
-        - docker build -t node:$CI_PIPELINE_ID .
+    - docker build -t node-app:$CI_PIPELINE_ID .
     artifacts:
         paths:
             - Dockerfile
@@ -25,16 +25,16 @@ push:
     services:
         - docker.dind
     script:
-        - docker tag node:$CI_PIPELINE_ID panjol/node:$CI_PIPELINE_ID
-        - docker push panjol/node:$CI_PIPELINE_ID
+        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
+        - docker tag node-app:$CI_PIPELINE_ID panjol/node-app:$CI_PIPELINE_ID
+        - docker push panjol/node-app:$CI_PIPELINE_ID
     allow_failure: false
 
 deploy:
     stage: deploy
-    image: docker:latest
-    services:
-        - docker.dind
+    image: google/cloud-sdk
     script:
+        - gcloud auth activate-service-account --key-file $GCP_
         - kubectl apply -f service.yml
     dependencies:
         - push
