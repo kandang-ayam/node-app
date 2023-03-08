@@ -24,7 +24,7 @@ deploy:
     stage: deploy
     image: google/cloud-sdk
     script:
-        - gcloud auth activate-service-account --key-file $GCP_
+        ## - gcloud auth activate-service-account --key-file $GCP_
         - kubectl apply -f service.yml
     dependencies:
         - build
