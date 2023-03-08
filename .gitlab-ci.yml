@@ -25,8 +25,8 @@ deploy:
     image: google/cloud-sdk:alpine
     script:
         #- echo $GCP_SERVICE_ACCOUNT_KEY > /tmp/gcp.json
-        #- gcloud auth activate-service-account --key-file /tmp/gcp.json
-        - gcloud config set project $PROJECT_ID
+        #- gcloud auth activate-service-account --key-file $GCP_SERVICE_ACCOUNT_KEY
+        - gcloud config set project $GCP_PROJECT_ID
         - gcloud container clusters get-credentials $GKE_CLUSTER --region $GCP_REGION --project $GCP_PROJECT_ID
         - gcloud container clusters get-credentials vanzoel-autopilot --region=asia-southeast1
         
