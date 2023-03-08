@@ -1,24 +1,15 @@
-image: alpine:latest
 stages:
-    - prepare
     - build
     - push
     - deploy
 
-prepare:
-    stage: prepare
-    script:
-        - sudo apt update
-        - sudo apt-get install ca-certificates curl gnupg lsb-release
-        - sudo mkdir -m 0755 -p /etc/apt/keyrings
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.dockercom/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        - sudo apt-get update
-        - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
 build:
     stage: build
+    image: docker:latest
+    services: 
+        - docker.dind
     script:
+        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
         - docker build -t node:$CI_PIPELINE_ID .
     artifacts:
         paths:
@@ -27,14 +18,19 @@ build:
 
 push:
     stage: push
+    image: docker:latest
+    services:
+        - docker.dind
     script:
-        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
         - docker tag node:$CI_PIPELINE_ID panjol/node:$CI_PIPELINE_ID
         - docker push panjol/node:$CI_PIPELINE_ID
     allow_failure: false
 
 deploy:
     stage: deploy
+    image: docker:latest
+    services:
+        - docker.dind
     script:
         - kubectl apply -f service.yml
     dependencies:
