@@ -8,7 +8,6 @@ stages:
     - build
     - push
     - deploy
-    - incremental rollout 10%
     - cleanup
 
 include:
