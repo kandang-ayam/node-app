@@ -1,17 +1,31 @@
-image: alpine:latest
-
-variables:
-    DOCKER_DRIVER: overlay2
-    ROLLOUT_RESOURCE_TYPE: deployment
-
 stages:
     - build
-    - push
     - deploy
-    - cleanup
 
-include:
-  - template: Jobs/Build.gitlab-ci.yml # https://gitlab.com/gitlab-org/gitlab-foss/blob/master/lib/gitlab/ci/templates/Jobs/Build.gitlab-ci.yml
-  - template: Jobs/Deploy.gitlab-ci.yml # https://gitlab.com/gitlab-org/gitlab-foss/blob/master/lib/gitlab/ci/templates/Jobs/Deploy.gitlab-ci.yml
+build:
+    stage: build
+    image: docker:latest
+    dependencies:
+        - build-app
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
+    script:
+        - docker build -t node:$CI_PIPELINE_ID .
+        - docker tag node:$CI_PIPELINE_ID panjol/node:$CI_PIPELINE_ID
+        - docker push panjol/node:$CI_PIPELINE_ID
+    artifacts:
+        paths:
+            - Dockerfile
+    allow_failure: false
 
-
+deploy:
+    stage: deploy
+    image: google/cloud-sdk
+    script:
+        - gcloud auth activate-service-account --key-file $GCP_
+        - kubectl apply -f service.yml
+    dependencies:
+        - push
+    when: on_success
