@@ -25,7 +25,7 @@ deploy:
     script:
         - echo $KUBECONFIG > /tmp/kubeconfig
         - gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT --key-file=$GCP_SERVICE_ACCOUNT_KEY
-        - gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE --project PROJECT_ID
+        - gcloud container clusters get-credentials node-cluster --region asia-southeast1 --project calm-vehicle-380009
         - kubectl apply -f service.yml
 
     dependencies:
