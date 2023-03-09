@@ -25,7 +25,7 @@ deploy:
     image: google/cloud-sdk:alpine
     script:
         #- gcloud auth activate-service-account --key=$GCP_SERVICE_ACCOUNT_KEY
-        - echo "$KEY" > /builds/kandang-ayam/node-app.tmp/key.json
+        - echo "$GCP_SERVICE_ACCOUNT_KEY" > /builds/kandang-ayam/node-app.tmp/key.json
         - gcloud auth activate-service-account --key-file=/builds/kandang-ayam/node-app.tmp/key.json
         - gcloud config set project $GCP_PROJECT_ID
         - gcloud config set container/cluster GKE_CLUSTER
