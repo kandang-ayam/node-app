@@ -27,7 +27,7 @@ deploy:
         - printenv
         #- gcloud auth activate-service-account --key=$GCP_SERVICE_ACCOUNT_KEY
         - echo "$GCP_SERVICE_ACCOUNT_KEY" > /tmp/key.json
-        - gcloud auth activate-service-account --key-file=key.json
+        - gcloud auth activate-service-account --key-file=/tmp/key.json
         - gcloud config set project $GCP_PROJECT_ID
         - gcloud config set container/cluster GKE_CLUSTER
         - gcloud config set compute/zone asia-south1-b
