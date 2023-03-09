@@ -24,11 +24,10 @@ deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-        - export GCP_SERVICE_ACCOUNT_KEY="$(cat /tmp/gcp.json)"
-        - gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT --key-file=/tmp/gcp.json
+        #- export GCP_SERVICE_ACCOUNT_KEY="$(cat /tmp/gcp.json)"
+        #- gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT --key-file=/tmp/gcp.json
         #- gcloud config set project $GCP_PROJECT_ID
-        - gcloud container clusters get-credentials $GKE_CLUSTER --region $GCP_REGION --project $GCP_PROJECT_ID
-        #- gcloud container clusters get-credentials vanzoel-autopilot --region=asia-southeast1
+        - gcloud container clusters get-credentials node-cluster --region asia-southeast1 --project calm-vehicle-380009
         
         # statrt Deploy the application
         - kubectl set image deployment/node-app node-app=docker.io/$DOCKER_HUB_USER/node-app:$CI_PIPELINE_ID --record
