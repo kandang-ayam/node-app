@@ -24,7 +24,6 @@ deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-        - mkdir /tmp/
         - export GCP_SERVICE_ACCOUNT_KEY="$(cat /tmp/gcp.json)"
         - gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT --key-file=/tmp/gcp.json
         #- gcloud config set project $GCP_PROJECT_ID
