@@ -24,11 +24,13 @@ deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-        - echo $GCP_SERVICE_ACCOUNT | base64 -d > ~/encoded_serviceaccount.json
-        - gcloud auth activate-service-account --key-file ~/encoded_serviceaccount.json
-        - gcloud config set project calm-vehicle-380009
-        - gcloud config set compute/zone asia-southeast1-b
-        - gcloud container clusters get-credentials node-cluster --region asia-southeast1 --project calm-vehicle-380009
+        - echo "$GCP_SERVICE_ACCOUNT_KEY" > key.json
+        - gcloud auth activate-service-account --key-file=key.json
+        - gcloud config set project $GCP_PROJECT_ID
+        - gcloud config set container/cluster GKE_CLUSTER
+        - gcloud config set compute/zone asia-south1-b
+        - gcloud container clusters get-credentials GKE_CLUSTER_NAME --zone asia-south1-b --project GCP_PROJECT_NAME
+        - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
         - kubectl apply -f service.yaml
 
         ##akdnaknd
