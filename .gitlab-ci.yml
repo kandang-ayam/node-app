@@ -24,7 +24,7 @@ deploy:
     stage: deploy
     image: google/cloud-sdk:alpine
     script:
-        - export GCP_SERVICE_ACCOUNT_KEY="$(cat /tmp/gcp.json"
+        - export $GCP_SERVICE_ACCOUNT_KEY="$(cat /tmp/gcp.json"
         - gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT --key-file=/tmp/gcp.json
         #- gcloud config set project $GCP_PROJECT_ID
         - gcloud container clusters get-credentials $GKE_CLUSTER --region $GCP_REGION --project $GCP_PROJECT_ID
