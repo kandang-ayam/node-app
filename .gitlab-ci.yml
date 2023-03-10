@@ -7,7 +7,7 @@ variables:
     DOCKER_TLS_CERTDIR: "/certs"
 login:
     stage: login
-    image: ubuntu:latest
+    image: docker:latest
         
         #name: docker:dind
         #alias: docker
@@ -18,8 +18,11 @@ login:
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
         #- systemctl docker restart
+    services:
+        - name: docker:dind
+          command: ["dockerd", "-s", "overlay2"]
+          alias: docker
     script:
-        - systemctl restart docker
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     artifacts:
         paths:
@@ -39,7 +42,7 @@ build:
             - Dockerfile
     allow_failure: false
     dependencies:
-        - "login"
+        - login
 
 deploy:
     stage: deploy
