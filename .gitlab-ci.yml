@@ -9,11 +9,6 @@ login:
     stage: login
     image: docker:latest
         
-        #name: docker:dind
-        #alias: docker
-        #command: ["dockerd", "-s", "overlay2"]
-    
-        
     before_script:
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/daemon.json
