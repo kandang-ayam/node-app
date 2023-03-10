@@ -33,7 +33,7 @@ deploy:
         #
 
 
-        #- gcloud components install kubectl
+        - gcloud components install kubectl
         #- kubectl config current-context
         #- gcloud auth activate-service-account --key-file=calm-vehicle-380009-f980783ece80.json
 
