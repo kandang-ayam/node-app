@@ -35,7 +35,9 @@ deploy:
 
         - gcloud components install kubectl
         - kubectl config current-context
-        - gcloud auth application-default login
+        - kubectl auth can-i '*' '*' --all-namespaces
+
+        #- gcloud auth application-default login
         - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GCP_REGION --project $GCP_PROJECT_ID
 
         #- sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
