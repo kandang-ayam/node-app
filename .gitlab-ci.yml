@@ -14,10 +14,10 @@ login:
         - echo $HARBOR_FILE > /etc/docker/daemon.json
         #- systemctl restart docker
         - sleep 5
-    #services:
-    #    - name: docker:dind
-     #     command: ["dockerd", "-s", "overlay2"]
-      #    alias: docker
+    services:
+        - name: docker:dind
+          command: ["dockerd", "-s", "overlay2"]
+          alias: docker
     script:
         - docker login $HARBOR_URL -u "$HARBOR_USR" -p "$HARBOR_PASS"
     artifacts:
