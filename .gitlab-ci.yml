@@ -35,7 +35,6 @@ deploy:
 
         - gcloud components install kubectl
         - kubectl config current-context
-        - kubectl auth can-i '*' '*' --all-namespaces
 
         #- gcloud auth application-default login
         - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GCP_REGION --project $GCP_PROJECT_ID
