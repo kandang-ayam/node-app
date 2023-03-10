@@ -13,9 +13,10 @@ build:
     before_script:
         #- command: ["dockerd", "-s", "overlay2"]
         #- alias: docker
+        - apt-get update && apt-get install -y systemd
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
-        - sh 'systemctl docker restart'
+        - systemctl docker restart
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
         - docker build -t node:$CI_PIPELINE_ID .
