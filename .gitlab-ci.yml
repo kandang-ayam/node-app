@@ -10,6 +10,7 @@ build:
     services:
         - docker:dind
     before_script:
+        - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
