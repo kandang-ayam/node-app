@@ -10,11 +10,12 @@ build:
     services:
         - docker:dind
     before_script:
-        - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS"
+        - echo $HARBOR_FILE > /etc/docker/dameon.json
+        - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
         - docker build -t node:$CI_PIPELINE_ID .
-        - docker tag node:$CI_PIPELINE_ID panjol/node:$CI_PIPELINE_ID
-        - docker push panjol/node:$CI_PIPELINE_ID
+        - docker tag node:$CI_PIPELINE_ID $HARBOR_URL/vanzoel/node:$CI_PIPELINE_ID
+        - docker push $HARBOR_URL/vanzoel/node:$CI_PIPELINE_ID
     artifacts:
         paths:
             - Dockerfile
