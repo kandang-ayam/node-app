@@ -23,7 +23,7 @@ login:
           command: ["dockerd", "-s", "overlay2"]
           alias: docker
     script:
-        - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
+        - docker login 35.198.197.144 -u "$HARBOR_USR" -p "$HARBOR_PASS"
     artifacts:
         paths:
             - /tmp/login/*
