@@ -15,7 +15,7 @@ build:
         #- alias: docker
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
-        - docker restart
+        - sudo service docker restart
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
         - docker build -t node:$CI_PIPELINE_ID .
