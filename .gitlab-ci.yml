@@ -1,16 +1,13 @@
 stages:
+    - login
     - build
     - deploy
 variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     DOCKER_TLS_CERTDIR: "/certs"
-build:
-    stage: build
-    image: docker:latest
-    services:
-        - name: docker:dind
-          command: ["dockerd", "-s", "overlay2"]
-          alias: docker
+login:
+    stage: login
+    image: ubuntu:latest
         
         #name: docker:dind
         #alias: docker
@@ -18,12 +15,21 @@ build:
     
         
     before_script:
-        #- 
-        - apt-get update && apt-get install -y systemd
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
         #- systemctl docker restart
+    script:
+        - systemctl restart docker
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
+    artifacts:
+        paths:
+            - /tmp/login/*
+    
+build:
+    stage: build
+    image: docker:latest
+    services:
+        - name: docker:dind
     script:
         - docker build -t node:$CI_PIPELINE_ID .
         - docker tag node:$CI_PIPELINE_ID $HARBOR_URL/vanzoel/node:$CI_PIPELINE_ID
@@ -32,6 +38,8 @@ build:
         paths:
             - Dockerfile
     allow_failure: false
+    dependencies:
+        - "login"
 
 deploy:
     stage: deploy
