@@ -44,7 +44,6 @@ deploy:
 
         - kubectl apply -f service.yml
 
-        ##akdnaknd
     dependencies:
         - build
 #    environment:
