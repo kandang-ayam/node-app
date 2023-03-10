@@ -38,7 +38,7 @@ deploy:
         #- gcloud auth activate-service-account --key-file=calm-vehicle-380009-f980783ece80.json
 
         #- gcloud auth application-default login
-        - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GCP_REGION --project $GCP_PROJECT_ID
+        #- gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GCP_REGION --project $GCP_PROJECT_ID
 
         #- sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
 
