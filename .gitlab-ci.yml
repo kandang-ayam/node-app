@@ -8,10 +8,12 @@ build:
     stage: build
     image: docker:latest
     services:
-        - docker:dind
+        - name: docker:dind
+        - command: ["dockerd", "-s", "overlay2"]
+        - alias: docker
     before_script:
         - mkdir /etc/docker/
-        - service docker restart
+        - systemctl restart docker
         - echo $HARBOR_FILE > /etc/docker/dameon.json
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
