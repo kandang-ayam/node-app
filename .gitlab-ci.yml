@@ -16,12 +16,12 @@ login:
         
     before_script:
         - mkdir /etc/docker/
-        - echo $HARBOR_FILE > /etc/docker/dameon.json
-        - systemctl restart docker
-    #services:
-     #   - name: docker:dind
-      #    command: ["dockerd", "-s", "overlay2"]
-          #alias: docker
+        - echo $HARBOR_FILE > /etc/docker/daemon.json
+        #- systemctl restart docker
+    services:
+        - name: docker:dind
+          command: ["dockerd", "-s", "overlay2"]
+          alias: docker
     script:
         - docker login 35.198.197.144 -u "$HARBOR_USR" -p "$HARBOR_PASS"
     artifacts:
