@@ -8,15 +8,21 @@ build:
     stage: build
     image: docker:latest
     services:
-        - docker:dind
+        - name: docker:dind
+          command: ["dockerd", "-s", "overlay2"]
+          alias: docker
+        
+        #name: docker:dind
+        #alias: docker
+        #command: ["dockerd", "-s", "overlay2"]
+    
         
     before_script:
-        #- command: ["dockerd", "-s", "overlay2"]
-        #- alias: docker
+        #- 
         - apt-get update && apt-get install -y systemd
         - mkdir /etc/docker/
         - echo $HARBOR_FILE > /etc/docker/dameon.json
-        - systemctl docker restart
+        #- systemctl docker restart
         - docker login -u "$HARBOR_USR" -p "$HARBOR_PASS"
     script:
         - docker build -t node:$CI_PIPELINE_ID .
