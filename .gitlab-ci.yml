@@ -19,7 +19,7 @@ login:
           command: ["dockerd", "-s", "overlay2"]
           alias: docker
     script:
-        - docker login $HARBOR_URL -u "$HARBOR_USR" -p "$HARBOR_PASS"
+        - echo "$HARBOR_PASS" | docker login $HARBOR_URL -u "$HARBOR_USR" --password-stdin
     artifacts:
         paths:
             - /tmp/login/*
