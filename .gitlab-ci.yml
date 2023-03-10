@@ -17,7 +17,7 @@ build:
         - docker push panjol/node:$CI_PIPELINE_ID
     artifacts:
         paths:
-            - /tmp/build/*
+            - Dockerfile
     allow_failure: false
 
 deploy:
