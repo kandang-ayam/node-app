@@ -16,7 +16,7 @@ login:
         - sleep 5
     services:
         - name: docker:dind
-          command: ["dockerd", "-s", "overlay2"]
+          command: ["--insecure-registries=35.198.197.144:80"]
           alias: docker
     script:
         - echo "$HARBOR_PASS" | docker login http://35.198.197.144:80 -u "$HARBOR_USR" --password-stdin
