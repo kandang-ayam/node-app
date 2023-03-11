@@ -10,18 +10,20 @@ variables:
 login:
     stage: login
     image: docker:latest
+
+    services:
+        - name: docker:dind
+          command: ["--insecure-registry=35.198.197.144:80"]
+          alias: docker
         
     before_script:
         - mkdir /etc/docker/
-        - echo $HARBOR_FILE > /etc/docker/daemon.json
+        #- echo $HARBOR_FILE > /etc/docker/daemon.json
         #- systemctl restart docker
-        - sleep 5
-    services:
-        - name: docker:dind
-          command: ["--insecure-registries=35.198.197.144:80"]
-          alias: docker
+        #- sleep 5
+    
     script:
-        - echo "$HARBOR_PASS" | docker login http://35.198.197.144:80 -u "$HARBOR_USR" --password-stdin
+        - echo "$HARBOR_PASS" | docker login http://35.198.197.144:80/ -u "$HARBOR_USR" --password-stdin
     artifacts:
         paths:
             - /tmp/login/*
