@@ -5,28 +5,21 @@ stages:
 variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://localhost:2375
+    
 
 login:
     stage: login
     image: ubuntu:latest
 
-    #services:
-        #- name: docker:dind
-         # command: ["--insecure-registries=35.198.197.144:80"]
+    
         
     before_script:
-        - apt update
-        - apt-get install ca-certificates curl gnupg lsb-release -y
-        - mkdir -m 0755 -p /etc/apt/keyrings
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-        - apt update
-        - apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-        #- mkdir /etc/docker/
-        - echo $HARBOR_FILE > /etc/docker/daemon.json
-        - systemctl restart docker
         
+        - mkdir /etc/docker/
+        - echo $HARBOR_FILE > /etc/docker/daemon.json
+    services:
+        - name: docker:dind
+          command: [""]
     
     script:
         - echo "$HARBOR_PASS" | docker login 35.198.197.144:80 -u "$HARBOR_USR" --password-stdin
