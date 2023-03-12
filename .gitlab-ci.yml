@@ -30,7 +30,8 @@ deploy:
         - gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT_KEY   
         #
         - gcloud components install kubectl
-        #- sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
+        - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
+        - sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" service.yml
 
         - kubectl apply -f service.yml
 
