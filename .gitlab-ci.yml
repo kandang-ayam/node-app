@@ -15,9 +15,9 @@ build:
     before_script:
         - - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
     script:
-        - docker build -t node:$CI_PIPELINE_ID --no-cache .
-        - docker tag node:$CI_PIPELINE_ID panjol/node:$CI_PIPELINE_ID
-        - docker push panjol/node:$CI_PIPELINE_ID
+        - docker build -t node:latest --no-cache .
+        - docker tag node:latest panjol/node:latest
+        - docker push panjol/node:latest
     artifacts:
         paths:
             - /tmo/build/*
