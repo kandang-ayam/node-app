@@ -32,6 +32,6 @@ spec:
     - protocol: "TCP"
       port: 9005 # The port that the service is running on in the cluster
       targetPort: 9005 # The port exposed by the service
-  type: NodePort # type of the service.
-  externalIPs:
-   - 34.143.183.88
+  type: LoadBalancer # type of the service.
+  #externalIPs:
+   #- 34.143.183.88
