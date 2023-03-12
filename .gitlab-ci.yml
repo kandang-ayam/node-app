@@ -31,7 +31,7 @@ deploy:
         #
         - gcloud components install kubectl
         - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" serivce.yaml
-        - sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" service.yml
+        #- sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" service.yml
 
         - kubectl apply -f service.yml
 
