@@ -5,7 +5,7 @@ stages:
 variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: "tcp://lordgaav__dind-options:2375"
+    #DOCKER_HOST: "tcp://lordgaav__dind-options:2375"
     
 
 login:
@@ -18,10 +18,10 @@ login:
         - echo $HARBOR_FILE > /etc/docker/daemon.json
     services:
         - name: docker:dind
-          command: [""]
+          command: ["restart"]
     
     script:
-        - echo "$HARBOR_PASS" | docker login 35.198.197.144:80 -u "$HARBOR_USR" --password-stdin
+        - echo "$HARBOR_PASS" | docker login 35.198.197.144 -u "$HARBOR_USR" --password-stdin
     artifacts:
         paths:
             - /tmp/login/*
