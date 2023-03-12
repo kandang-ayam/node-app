@@ -22,8 +22,6 @@ build:
         paths:
             - /tmo/build/*
     allow_failure: false
-    dependencies:
-        - login
 
 deploy:
     stage: deploy
