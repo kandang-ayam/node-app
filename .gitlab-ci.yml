@@ -14,13 +14,12 @@ login:
 
     before_script:
         - mkdir /etc/docker/
-        - echo $HARBOR_FILE > /etc/docker/daemon.json
+        #- echo $HARBOR_FILE > /etc/docker/daemon.json
     services:
         - name: docker:dind
-          command: ["restart"]
+          #command: ["restart"]
     
     script:
-        
         - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
     artifacts:
         paths:
