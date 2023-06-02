@@ -24,12 +24,9 @@ jobs:
       - name: Login to DockerHub
         run: docker login -u panjol -p AiFa4897
         
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/node-app:latest
+      - name: Push Docker image
+        run: docker tag node-app:latest panjol/node-app:latest
+        run: docker push panjol/node-app:latest
 
       - name: Install sshpass
         run: sudo apt-get -y install sshpass
