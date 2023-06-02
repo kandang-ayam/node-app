@@ -22,7 +22,7 @@ jobs:
         run: docker build -t node-app:latest .
 
       - name: Login to DockerHub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
