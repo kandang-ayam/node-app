@@ -25,8 +25,7 @@ jobs:
         run: docker login -u panjol -p AiFa4897
         
       - name: Push Docker image
-        run: 
-             docker tag node-app:latest panjol/node-app:latest
+        run: docker tag node-app:latest panjol/node-app:latest
              docker push panjol/node-app:latest
 
       - name: Install sshpass
