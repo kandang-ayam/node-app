@@ -32,3 +32,18 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+          
+      - name: SSH into EC2 instance and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}  # EC2 instance public IP or hostname
+          username: ${{ secrets.EC2_USERNAME }}  # SSH username
+          key: ${{ secrets.EC2_PRIVATE_KEY }}  # Private key for authentication
+          script: |
+            # Stop and remove existing container (if any)
+            ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "docker stop node-app || true"
+            ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "docker rm node-app || true"
+
+            # Pull and run the new image
+            ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "docker pull ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest"
+            ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "docker run -d --name node-app -p 9005:9005 ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest"
