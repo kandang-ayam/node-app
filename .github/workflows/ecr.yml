@@ -35,14 +35,15 @@ jobs:
 
       - name: SSH into EC2 instance and deploy
         run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2_private_key.pem
-          chmod 600 ec2_private_key.pem
-          echo "[ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com]:22 $(echo ${{ secrets.EC2_SSH_HOST_KEY }} | base64 -d)" > known_hosts
-          chmod 600 known_hosts
-          ssh -i ec2_private_key.pem -o UserKnownHostsFile=known_hosts ubuntu@ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com << EOF
-          EOF
-        shell: bash
-        env:
-         EC2_SSH_HOST_KEY: ${{ secrets.EC2_SSH_HOST_KEY }}
+         echo "${{ secrets.EC2_PRIVATE_KEY }}" > exam.pem
+         chmod 600 ec2_private_key.pem
+         ssh -i "exam.pem" ubuntu@ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com 
 
+         docker stop my-container || true
+         docker rm my-container || true
+
+         docker pull ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+         docker run -d --name my-container -p 9005:9005 ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+         EOF
+        shell: bash
 
