@@ -42,19 +42,16 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}  # Private key for authentication
           
           script: |-
-          
-            echo "${{ secrets.EC2_PRIVATE_KEY }}" > exam.pem
-            chmod 600 exam.pem
-            
-            ssh -i "exam.pem" ubuntu@ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com 
-            sudo usermod -aG docker $USER
-            aws ecr get-login-password --region ap-southeast-3 | sudo docker login --username AWS --password-stdin 279385876931.dkr.ecr.ap-southeast-3.amazonaws.com
+           echo "${{ secrets.EC2_PRIVATE_KEY }}" > exam.pem
+           chmod 600 exam.pem
+           ssh -i "exam.pem" ubuntu@ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com '
+           aws ecr get-login-password --region ap-southeast-3 | sudo docker login --username AWS --password-stdin 279385876931.dkr.ecr.ap-southeast-3.amazonaws.com
+           docker stop my-container || true
+           docker rm my-container || true
+           docker pull ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+           docker run -d --name my-container -p 9005:9005 ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+           '
 
-            docker stop my-container || true
-            docker rm my-container || true
-
-            docker pull ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
-            docker run -d --name my-container -p 9005:9005 ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
          
 
 
