@@ -24,19 +24,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and tag Docker image
-        run: |
-          docker build -t node-app:latest .
-          docker tag node-app:latest ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
-
-      - name: Push Docker image to ECR
-        run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
-
       - name: SSH into EC2 instance and deploy
         run: |
          echo "${{ secrets.EC2_PRIVATE_KEY }}" > exam.pem
-         chmod 600 ec2_private_key.pem
+         chmod 600 exam.pem
          ssh -i "exam.pem" ubuntu@ec2-108-136-231-117.ap-southeast-3.compute.amazonaws.com 
 
          docker stop my-container || true
