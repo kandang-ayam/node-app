@@ -24,6 +24,15 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Build and tag Docker image
+        run: |
+          docker build -t node-app:latest .
+          docker tag node-app:latest ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/vanzoel:latest
+
 
       - name: SSH into EC2 instance and deploy
         uses: appleboy/ssh-action@master
